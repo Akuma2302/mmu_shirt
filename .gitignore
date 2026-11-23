@@ -1,0 +1,6 @@
+# Local Claude Code / preview settings
+.claude/
+
+# OS clutter
+Thumbs.db
+.DS_Store
