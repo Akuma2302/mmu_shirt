@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<title>KMKPH ’26 — Semua Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Unbounded:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  /* 1080 × 1350 portrait poster. Render with: msedge --headless --screenshot --window-size=1080,1350 */
+  :root { --purple: #5b2a91; --purple-dk: #3b1661; --ink: #141214; --muted: #6b6670; --bg: #f6f2ea; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; }
+  body { background: var(--bg); color: var(--ink); font-family: Manrope, Arial, sans-serif; position: relative;
+    display: flex; flex-direction: column; justify-content: space-between; padding: 56px 36px 44px; }
+
+  /* Diagonal stripes in two corners, like the NL posters */
+  .stripe { position: absolute; width: 190px; height: 190px; background: repeating-linear-gradient(135deg, var(--purple) 0 18px, transparent 18px 34px); }
+  .stripe.tl { top: 0; left: 0; clip-path: polygon(0 0, 100% 0, 0 100%); }
+  .stripe.br { bottom: 0; right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+  header { text-align: center; position: relative; z-index: 1; }
+  .eyebrow { font: 800 17px Manrope; letter-spacing: .28em; text-transform: uppercase; color: var(--purple); }
+  h1 { font: 800 58px/1.05 Unbounded, 'Arial Black', sans-serif; letter-spacing: -.035em; margin: 16px 0 14px; white-space: nowrap; }
+  h1 span { color: var(--purple); }
+  .sub { font: 600 23px Manrope; color: var(--muted); }
+  .sub b { color: var(--ink); }
+
+  /* 2 + 2 + 1 layout, every card the same size so no design looks favoured */
+  .grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 20px; padding: 0 100px; }
+  .card { width: 366px; background: #fff; border-radius: 22px; overflow: hidden; box-shadow: 0 10px 28px rgba(40,15,70,.10); }
+  /* Short-sleeve front + back cut from each 1169×1280 poster: x 10–610, y 300–680 (no FRONT/BACK labels) */
+  .crop { position: relative; aspect-ratio: 600/380; overflow: hidden; background: #f4efe6; }
+  .crop img { position: absolute; width: 194.83%; max-width: none; left: -1.67%; top: -78.95%; }
+  .label { display: flex; align-items: center; gap: 12px; padding: 10px 16px; }
+  .letter { width: 42px; height: 42px; border-radius: 50%; background: var(--purple); color: #fff; display: grid; place-items: center; font: 800 21px Unbounded, sans-serif; flex: none; }
+  .name { font: 800 21px Manrope; white-space: nowrap; }
+  .sw { margin-left: auto; display: flex; gap: 5px; }
+  .sw i { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,.18); }
+
+  footer { position: relative; z-index: 1; background: var(--purple-dk); color: #fff; border-radius: 22px; padding: 24px 30px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+  footer .cta { font: 800 34px/1.05 Unbounded, sans-serif; letter-spacing: -.02em; }
+  footer .cta small { display: block; font: 600 19px Manrope; letter-spacing: 0; color: #d9c9f0; margin-top: 8px; }
+  footer .link { font: 800 19px Manrope; background: #fff; color: var(--purple-dk); padding: 14px 18px; border-radius: 14px; text-align: center; line-height: 1.3; }
+</style>
+</head>
+<body>
+  <div class="stripe tl"></div>
+  <div class="stripe br"></div>
+
+  <header>
+    <div class="eyebrow">Kolej Matrikulasi Kejuruteraan Pahang</div>
+    <h1>Pilih design <span>KMKPH ’26</span></h1>
+    <p class="sub"><b>5 design</b> · Short &amp; long sleeve · 240GSM oversize · Yang menang kami buat 🔥</p>
+  </header>
+
+  <section class="grid">
+    <div class="card"><div class="crop"><img src="../assets/design-a.jpg" alt=""></div>
+      <div class="label"><span class="letter">A</span><span class="name">Hitam + Ungu</span><span class="sw"><i style="background:#111"></i><i style="background:#7c3fc4"></i></span></div></div>
+    <div class="card"><div class="crop"><img src="../assets/design-b.jpg" alt=""></div>
+      <div class="label"><span class="letter">B</span><span class="name">Hitam + Putih</span><span class="sw"><i style="background:#111"></i><i style="background:#f7f7f5"></i></span></div></div>
+    <div class="card"><div class="crop"><img src="../assets/design-c.jpg" alt=""></div>
+      <div class="label"><span class="letter">C</span><span class="name">Cream + Navy</span><span class="sw"><i style="background:#f3ecdf"></i><i style="background:#1f2a55"></i></span></div></div>
+    <div class="card"><div class="crop"><img src="../assets/design-d.jpg" alt=""></div>
+      <div class="label"><span class="letter">D</span><span class="name">Cream + Ungu</span><span class="sw"><i style="background:#f3ecdf"></i><i style="background:#6a2fa8"></i></span></div></div>
+    <div class="card"><div class="crop"><img src="../assets/design-e.jpg" alt=""></div>
+      <div class="label"><span class="letter">E</span><span class="name">Hitam + Emas</span><span class="sw"><i style="background:#111"></i><i style="background:#e8b730"></i></span></div></div>
+  </section>
+
+  <footer>
+    <div class="cta">Undi sekarang! 🗳️<small>2 minit je · Bagitahu harga yang berbaloi</small></div>
+    <div class="link">akuma2302.github.io/<br>mmu_shirt/kmkph-survey</div>
+  </footer>
+</body>
+</html>
