@@ -11,7 +11,7 @@
 
 const CONFIG = {
   // Only needed for a standalone script: the long ID in the Sheet's URL between /d/ and /edit
-  SHEET_ID: '',
+  SHEET_ID: '1jnoR2dK9LOiaL6LNhXeed9Xo4SHzRghWieXtLoQ5fx0',
   RESPONSES_SHEET: 'Responses',
   RESULTS_SHEET: 'Results',
   SURVEY_OPEN: true,          // set false to stop accepting answers
