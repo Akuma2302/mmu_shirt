@@ -214,7 +214,9 @@ function buildResults_(ss) {
   sh.getRange(row, 1, 1, 2).setValues([['Purata niat beli (1-5)', `=IFERROR(AVERAGE(${R}!${ic}2:${ic}), 0)`]]).setFontWeight('bold');
   sh.getRange(row, 2).setNumberFormat('0.0');
   sh.getRange(row + 1, 1, 1, 2).setValues([['Confirm beli (4-5)', `=COUNTIF(${R}!${ic}2:${ic}, ">=4")`]]);
-  sh.autoResizeColumns(1, 3);
+  sh.setColumnWidth(1, 260);
+  sh.setColumnWidth(2, 70);
+  sh.setColumnWidth(3, 70);
 }
 
 /** Removes responses whose Program / Kuliah starts with "TEST" (for clearing your own tests). */
