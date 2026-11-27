@@ -21,3 +21,7 @@ apps-script/Survey.gs Backend: saves answers to Google Sheets, live Results tab
 - **Setting the price:** look at "Sanggup bayar" together with "Terlalu mahal" / "Terlalu murah". The best price sits above where most people say "too cheap" and below where they say "too expensive".
 - To clear your own test answers, type `TEST` in Program/Kuliah when testing, then run `removeTestResponses`.
 - To close the survey, set `SURVEY_OPEN: false` in `Survey.gs` and deploy a new version.
+
+## Changing the design images
+
+Replace the files in `assets/`, then bump the version in `index.html` (find `?v=2`, replace all with `?v=3`). Without that, browsers that already opened the survey may keep showing the old images for a while.
