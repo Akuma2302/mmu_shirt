@@ -2,7 +2,7 @@
 
 ```
 index.html            Survey page (4 steps, mobile-first)
-assets/design-a..e    The 5 design posters (A Hitam+Ungu, B Hitam+Cream, C Cream+Hitam, D Cream+Ungu, E Hitam+Emas)
+assets/design-a..e    The 5 design posters (A Hitam+Ungu, B Hitam+Putih, C Cream+Navy, D Cream+Ungu, E Hitam+Emas)
 apps-script/Survey.gs Backend: saves answers to Google Sheets, live Results tab
 ```
 

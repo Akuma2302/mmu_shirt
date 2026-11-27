@@ -30,7 +30,7 @@ const OPTIONS = {
   earlyBird: ['Ya, confirm', 'Mungkin', 'Tak, tunggu dulu'],
   notify:    ['Ya', 'Tak perlu'],
 };
-const DESIGN_LABELS = { A: 'Hitam + Ungu', B: 'Hitam + Cream', C: 'Cream + Hitam', D: 'Cream + Ungu', E: 'Hitam + Emas' };
+const DESIGN_LABELS = { A: 'Hitam + Ungu', B: 'Hitam + Putih', C: 'Cream + Navy', D: 'Cream + Ungu', E: 'Hitam + Emas' };
 
 const HEADERS = [
   'Timestamp', 'Design Pilihan', 'Pilihan Kedua', 'Sebab Suka', 'Cadangan Design',
