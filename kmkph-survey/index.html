@@ -1,0 +1,558 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pilih Design Baju KMKPH ’26 — Survey</title>
+<meta name="description" content="5 design baju collegiate KMKPH ’26. Undi design favourite korang dan bagitahu harga yang berbaloi. 2 minit je.">
+<meta property="og:title" content="Pilih Design Baju KMKPH ’26">
+<meta property="og:description" content="5 design. Undi favourite korang & bagitahu harga yang berbaloi. 2 minit je.">
+<meta property="og:image" content="assets/design-a.jpg">
+<meta name="theme-color" content="#3b1661">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f2ea;
+    --paper: #ffffff;
+    --ink: #141214;
+    --muted: #6b6670;
+    --line: #e4ddd2;
+    --purple: #5b2a91;      /* KMKPH purple, from the poster prints */
+    --purple-dk: #3b1661;
+    --purple-lt: #efe7f8;
+    --err: #c0262d;
+    --ok: #1e7a46;
+    --wide: Unbounded, 'Arial Black', sans-serif;
+    --cond: Anton, Impact, 'Arial Narrow', sans-serif;
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.55 Manrope, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; color: inherit; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 16px; }
+
+  /* Top bar */
+  .top { position: sticky; top: 0; z-index: 20; background: rgba(246,242,234,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .top .wrap { display: flex; justify-content: space-between; align-items: center; height: 56px; }
+  .logo { font: 800 16px var(--wide); letter-spacing: -.02em; }
+  .logo em { font-style: normal; color: var(--purple); }
+  .pill { font: 800 10px Manrope; letter-spacing: .14em; text-transform: uppercase; background: var(--purple); color: #fff; padding: 6px 10px; border-radius: 999px; }
+
+  /* Hero */
+  .hero { padding: 28px 0 8px; overflow: hidden; }
+  .eyebrow { font: 800 11px Manrope; letter-spacing: .18em; text-transform: uppercase; color: var(--purple); }
+  .hero h1 { font: 800 clamp(30px, 7vw, 60px)/1.02 var(--wide); letter-spacing: -.03em; margin: 10px 0 12px; }
+  .hero h1 span { color: var(--purple); }
+  .hero p { color: var(--muted); margin: 0 0 18px; max-width: 46ch; }
+  .hero .row { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .count { font-size: 13px; color: var(--muted); }
+  .count b { color: var(--ink); }
+  .fan { position: relative; height: 210px; margin: 26px 0 4px; }
+  .fan .t { position: absolute; top: 0; left: 50%; width: 46%; max-width: 230px; aspect-ratio: 610/400; border-radius: 12px; overflow: hidden; background: #fff; box-shadow: 0 14px 34px rgba(30,10,50,.18); }
+  .fan .t:nth-child(1) { transform: translateX(-120%) rotate(-8deg); top: 18px; }
+  .fan .t:nth-child(2) { transform: translateX(-50%); z-index: 2; }
+  .fan .t:nth-child(3) { transform: translateX(20%) rotate(8deg); top: 18px; }
+
+  /* Short-sleeve front + back cut from each poster (all posters are 1169×1280) */
+  .crop { position: relative; aspect-ratio: 610/400; overflow: hidden; background: #f4efe6; }
+  .crop img { position: absolute; width: 191.64%; max-width: none; left: -0.82%; top: -73.75%; }
+
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--purple); color: #fff; border: 0; border-radius: 999px; padding: 15px 24px; font: 800 13px Manrope; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; box-shadow: 0 10px 26px rgba(91,42,145,.35); transition: transform .15s, background .15s; text-decoration: none; }
+  .btn:hover { background: var(--purple-dk); transform: translateY(-1px); }
+  .btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+  .btn.ghost:hover { background: var(--paper); }
+  .btn[disabled] { opacity: .55; cursor: not-allowed; transform: none; }
+
+  /* Survey card */
+  .survey { margin: 18px 0 40px; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: 22px; box-shadow: 0 1px 0 rgba(0,0,0,.02); scroll-margin-top: 70px; }
+  .progress { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .bar { flex: 1; height: 6px; background: var(--purple-lt); border-radius: 99px; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 25%; background: var(--purple); border-radius: 99px; transition: width .3s ease; }
+  .progress span { font: 700 12px Manrope; color: var(--muted); white-space: nowrap; }
+  .step { display: none; }
+  .step.on { display: block; animation: fade .25s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .step h2 { font: 800 20px/1.2 var(--wide); letter-spacing: -.02em; margin: 0 0 4px; }
+  .step .sub { color: var(--muted); margin: 0 0 16px; font-size: 14px; }
+
+  .q { margin: 22px 0 0; border: 0; padding: 0; }
+  .q:first-of-type { margin-top: 0; }
+  .q legend, .q > label.title { display: block; font-weight: 800; font-size: 15px; margin-bottom: 10px; padding: 0; }
+  .q legend small, .q > label.title small { font-weight: 500; color: var(--muted); }
+  .req { color: var(--err); }
+  .err { color: var(--err); font-size: 13px; margin-top: 6px; min-height: 0; }
+
+  /* Design cards */
+  .designs { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .dcard { position: relative; border: 2px solid var(--line); border-radius: 14px; overflow: hidden; cursor: pointer; background: var(--paper); transition: border-color .15s, box-shadow .15s; }
+  .dcard input { position: absolute; opacity: 0; pointer-events: none; }
+  .dcard:hover { border-color: #cdbfe0; }
+  .dcard:has(input:checked) { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(91,42,145,.18); }
+  .dcard:has(input:focus-visible) { outline: 3px solid var(--purple); outline-offset: 2px; }
+  .dcard .meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 14px; }
+  .dcard b { font: 800 14px Manrope; }
+  .dcard .sw { display: flex; gap: 4px; }
+  .dcard .sw i { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0,0,0,.15); }
+  .dcard .tick { position: absolute; top: 10px; right: 10px; width: 28px; height: 28px; border-radius: 50%; background: var(--purple); color: #fff; display: none; place-items: center; font: 800 15px Manrope; }
+  .dcard:has(input:checked) .tick { display: grid; }
+  .zoom { position: absolute; top: 10px; left: 10px; border: 0; background: rgba(20,18,20,.75); color: #fff; font: 700 11px Manrope; padding: 6px 10px; border-radius: 999px; cursor: zoom-in; }
+
+  /* Chips (radio / checkbox pills) */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; }
+  .chip input { position: absolute; opacity: 0; inset: 0; cursor: pointer; margin: 0; }
+  .chip span { display: inline-flex; align-items: center; gap: 6px; padding: 10px 14px; border: 1.5px solid var(--line); border-radius: 999px; font-weight: 700; font-size: 14px; background: var(--paper); transition: .15s; user-select: none; }
+  .chip input:checked + span { border-color: var(--purple); background: var(--purple); color: #fff; }
+  .chip input:focus-visible + span { outline: 3px solid rgba(91,42,145,.4); outline-offset: 2px; }
+  .chip input:disabled + span { opacity: .35; }
+  .chips.stack { flex-direction: column; }
+  .chips.stack .chip span { width: 100%; border-radius: 12px; justify-content: space-between; }
+
+  .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+  .scale .chip span { width: 100%; justify-content: center; border-radius: 12px; padding: 12px 0; font: 800 16px var(--wide); }
+  .scale-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 6px; }
+
+  textarea, input[type=text], input[type=tel] { width: 100%; font: inherit; padding: 12px 14px; border: 1.5px solid var(--line); border-radius: 12px; background: var(--paper); color: var(--ink); }
+  textarea:focus, input:focus { outline: none; border-color: var(--purple); }
+  .invalid { border-color: var(--err) !important; }
+  .check { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; }
+  .check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--purple); flex: none; }
+  .hp { position: absolute; left: -9999px; }
+
+  .nav { display: flex; justify-content: space-between; gap: 10px; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .nav .btn { flex: 1; max-width: 220px; }
+  .nav .btn.ghost { max-width: 140px; }
+  .status { display: none; margin-top: 14px; padding: 12px 14px; border-radius: 12px; font-size: 14px; background: #fdecea; color: var(--err); }
+  .status.show { display: block; }
+
+  /* Thank-you */
+  .done { text-align: center; padding: 12px 0 4px; }
+  .done .big { font-size: 48px; }
+  .done h2 { font: 800 26px var(--wide); margin: 8px 0 6px; letter-spacing: -.02em; }
+  .done p { color: var(--muted); margin: 0 auto 18px; max-width: 38ch; }
+  .done .pick { max-width: 320px; margin: 0 auto 20px; border-radius: 14px; overflow: hidden; border: 2px solid var(--purple); }
+  .done .pick .meta { padding: 10px; font-weight: 800; }
+  .done .actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* Lightbox */
+  .lb { position: fixed; inset: 0; z-index: 50; background: rgba(12,8,16,.9); display: none; align-items: center; justify-content: center; padding: 16px; }
+  .lb.on { display: flex; }
+  .lb img { max-height: 88vh; width: auto; border-radius: 10px; }
+  .lb button { position: absolute; top: 14px; right: 14px; width: 42px; height: 42px; border-radius: 50%; border: 0; background: #fff; font: 800 20px Manrope; cursor: pointer; }
+  .lb .cap { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; color: #fff; font-weight: 700; }
+
+  footer { text-align: center; color: var(--muted); font-size: 12px; padding: 10px 0 40px; }
+
+  @media (max-width: 560px) {
+    .survey { padding: 18px 14px; border-radius: 16px; }
+    .designs { grid-template-columns: 1fr; }
+    .fan { height: 150px; }
+    .nav .btn { max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <div class="logo">KMKPH<em>’26</em></div>
+    <div class="pill">Survey</div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Kolej Matrikulasi Kejuruteraan Pahang</div>
+    <h1>Pilih design baju <span>KMKPH ’26</span></h1>
+    <p>5 design, satu je akan dihasilkan. Undi favourite korang dan bagitahu harga yang berbaloi. 2 minit je! 🙌</p>
+    <div class="row">
+      <a class="btn" href="#survey">Mula survey ⟶</a>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="fan" aria-hidden="true">
+      <div class="t crop"><img src="assets/design-d.jpg" alt=""></div>
+      <div class="t crop"><img src="assets/design-a.jpg" alt=""></div>
+      <div class="t crop"><img src="assets/design-e.jpg" alt=""></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <form class="survey" id="survey" novalidate>
+    <div class="progress" id="progress"><div class="bar"><i id="barFill"></i></div><span id="stepLabel">Langkah 1 / 4</span></div>
+
+    <!-- Step 1: Design -->
+    <section class="step on" data-step="1">
+      <h2>Design mana paling korang suka?</h2>
+      <p class="sub">Tekan design untuk pilih. Tekan 🔍 untuk tengok poster penuh.</p>
+
+      <fieldset class="q">
+        <legend>Design pilihan utama <span class="req">*</span></legend>
+        <div class="designs" id="designGrid"></div>
+        <div class="err" data-err="design"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Pilihan kedua <small>(optional)</small></legend>
+        <div class="chips" id="secondChips"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Apa yang buat korang suka design tu? <small>(boleh pilih banyak)</small></legend>
+        <div class="chips" id="reasonChips"></div>
+      </fieldset>
+
+      <div class="q">
+        <label class="title" for="suggestion">Ada cadangan untuk improve design? <small>(optional)</small></label>
+        <textarea id="suggestion" name="suggestion" rows="2" maxlength="300" placeholder="Contoh: tulisan belakang besar sikit, tukar warna..."></textarea>
+      </div>
+    </section>
+
+    <!-- Step 2: Baju -->
+    <section class="step" data-step="2">
+      <h2>Pilihan baju</h2>
+      <p class="sub">Bantu kami anggar berapa banyak nak produce.</p>
+
+      <fieldset class="q">
+        <legend>Korang lebih suka jenis apa? <span class="req">*</span></legend>
+        <div class="chips" id="sleeveChips"></div>
+        <div class="err" data-err="sleeve"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Saiz yang korang biasa pakai? <span class="req">*</span> <small>(cutting oversize)</small></legend>
+        <div class="chips" id="sizeChips"></div>
+        <div class="err" data-err="size"></div>
+      </fieldset>
+    </section>
+
+    <!-- Step 3: Harga -->
+    <section class="step" data-step="3">
+      <h2>Harga</h2>
+      <p class="sub">Jawab jujur, ni yang tentukan harga akhir 😉</p>
+
+      <fieldset class="q">
+        <legend>Kalau design pilihan korang dijual, korang akan beli? <span class="req">*</span></legend>
+        <div class="scale" id="intentChips"></div>
+        <div class="scale-labels"><span>1 · Confirm tak beli</span><span>5 · Confirm beli</span></div>
+        <div class="err" data-err="intent"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Berapa korang sanggup bayar untuk SATU baju <u>short sleeve</u>? <span class="req">*</span></legend>
+        <div class="chips stack" id="priceShortChips"></div>
+        <div class="err" data-err="priceShort"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Dan untuk <u>long sleeve</u>? <span class="req">*</span></legend>
+        <div class="chips stack" id="priceLongChips"></div>
+        <div class="err" data-err="priceLong"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Pada harga berapa korang rasa baju ni MAHAL sangat sampai tak nak beli? <span class="req">*</span></legend>
+        <div class="chips" id="tooExpensiveChips"></div>
+        <div class="err" data-err="tooExpensive"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Pada harga berapa korang rasa MURAH sangat sampai ragu kualiti? <span class="req">*</span></legend>
+        <div class="chips" id="tooCheapChips"></div>
+        <div class="err" data-err="tooCheap"></div>
+      </fieldset>
+
+      <fieldset class="q">
+        <legend>Kalau ada early bird (lebih murah untuk pcs pertama), korang akan order awal? <span class="req">*</span></legend>
+        <div class="chips" id="earlyBirdChips"></div>
+        <div class="err" data-err="earlyBird"></div>
+      </fieldset>
+    </section>
+
+    <!-- Step 4: Tentang korang -->
+    <section class="step" data-step="4">
+      <h2>Last sekali!</h2>
+      <p class="sub">Tentang korang. Ni optional kecuali yang bertanda *.</p>
+
+      <div class="q">
+        <label class="title" for="program">Program / kuliah korang? <small>(optional)</small></label>
+        <input id="program" name="program" type="text" maxlength="80" placeholder="Contoh: Kejuruteraan, Sains Komputer, Kuliah 3...">
+      </div>
+
+      <fieldset class="q">
+        <legend>Nak kami WhatsApp bila pre-order buka? <span class="req">*</span></legend>
+        <div class="chips" id="notifyChips"></div>
+        <div class="err" data-err="notify"></div>
+      </fieldset>
+
+      <div class="q" id="phoneWrap" hidden>
+        <label class="title" for="phone">No WhatsApp</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" placeholder="012-345 6789">
+        <div class="err" data-err="phone"></div>
+        <label class="check" style="margin-top:12px"><input type="checkbox" id="consent">
+          <span>Saya setuju no WhatsApp saya digunakan <b>hanya</b> untuk maklum bila pre-order buka.</span></label>
+        <div class="err" data-err="consent"></div>
+      </div>
+
+      <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </section>
+
+    <!-- Done -->
+    <section class="step" data-step="done">
+      <div class="done">
+        <div class="big">🎉</div>
+        <h2>Terima kasih!</h2>
+        <p>Undi korang dah direkod. Kami akan umumkan design yang menang & buka pre-order tak lama lagi.</p>
+        <div class="pick" id="donePick"></div>
+        <div class="actions">
+          <a class="btn" id="shareBtn" href="#" target="_blank" rel="noopener">Share survey ni ke WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="nav" id="nav">
+      <button type="button" class="btn ghost" id="backBtn">⟵ Back</button>
+      <button type="button" class="btn" id="nextBtn">Next ⟶</button>
+    </div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </form>
+</main>
+
+<footer>KMKPH Collegiate Series ’26 · Survey design & harga</footer>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Poster design">
+  <img id="lbImg" alt="">
+  <div class="cap" id="lbCap"></div>
+  <button type="button" id="lbClose" aria-label="Tutup">×</button>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+  // Paste the survey Apps Script Web App URL here (ends with /exec)
+  SCRIPT_URL: 'PASTE_YOUR_SURVEY_WEB_APP_URL_HERE',
+};
+// Keep in sync with OPTIONS in Survey.gs (the server rejects anything else)
+const DESIGNS = [
+  { id: 'A', label: 'Hitam + Ungu',  img: 'assets/design-a.jpg', sw: ['#111', '#7c3fc4'] },
+  { id: 'B', label: 'Hitam + Cream', img: 'assets/design-b.jpg', sw: ['#111', '#efe3c8'] },
+  { id: 'C', label: 'Cream + Hitam', img: 'assets/design-c.jpg', sw: ['#f3ecdf', '#111'] },
+  { id: 'D', label: 'Cream + Ungu',  img: 'assets/design-d.jpg', sw: ['#f3ecdf', '#6a2fa8'] },
+  { id: 'E', label: 'Hitam + Emas',  img: 'assets/design-e.jpg', sw: ['#111', '#e8b730'] },
+];
+const OPTIONS = {
+  reasons:  ['Warna', 'Logo / tulisan', 'Simple & minimal', 'Nampak premium', 'Boleh pakai hari-hari', 'Lain-lain'],
+  sleeve:   ['Short sleeve', 'Long sleeve', 'Dua-dua pun okay'],
+  size:     ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+  intent:   ['1', '2', '3', '4', '5'],
+  priceShort: ['Bawah RM40', 'RM40–49', 'RM50–59', 'RM60–69', 'RM70 ke atas'],
+  priceLong:  ['Bawah RM50', 'RM50–59', 'RM60–69', 'RM70–79', 'RM80 ke atas'],
+  tooExpensive: ['RM50', 'RM60', 'RM70', 'RM80', 'RM90 ke atas'],
+  tooCheap:     ['RM20', 'RM30', 'RM40', 'RM50'],
+  earlyBird: ['Ya, confirm', 'Mungkin', 'Tak, tunggu dulu'],
+  notify:    ['Ya', 'Tak perlu'],
+};
+/* ========================================== */
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const connected = !CONFIG.SCRIPT_URL.startsWith('PASTE_');
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+// Build design cards
+$('#designGrid').innerHTML = DESIGNS.map(d => `
+  <label class="dcard">
+    <input type="radio" name="design" value="${d.id}">
+    <div class="crop"><img src="${d.img}" alt="Design ${d.id}: ${d.label}, short sleeve depan dan belakang" loading="lazy"></div>
+    <button type="button" class="zoom" data-zoom="${d.id}">🔍 Poster penuh</button>
+    <span class="tick">✓</span>
+    <div class="meta"><b>Design ${d.id} · ${d.label}</b><span class="sw">${d.sw.map(c => `<i style="background:${c}"></i>`).join('')}</span></div>
+  </label>`).join('');
+
+// Build chip groups
+const chips = (el, name, values, type = 'radio', labels) => {
+  $(el).innerHTML = values.map(v => `<label class="chip"><input type="${type}" name="${name}" value="${esc(v)}"><span>${esc(labels ? labels(v) : v)}</span></label>`).join('');
+};
+chips('#secondChips', 'second', DESIGNS.map(d => d.id), 'radio', v => `Design ${v}`);
+chips('#reasonChips', 'reasons', OPTIONS.reasons, 'checkbox');
+chips('#sleeveChips', 'sleeve', OPTIONS.sleeve);
+chips('#sizeChips', 'size', OPTIONS.size);
+chips('#intentChips', 'intent', OPTIONS.intent);
+chips('#priceShortChips', 'priceShort', OPTIONS.priceShort);
+chips('#priceLongChips', 'priceLong', OPTIONS.priceLong);
+chips('#tooExpensiveChips', 'tooExpensive', OPTIONS.tooExpensive);
+chips('#tooCheapChips', 'tooCheap', OPTIONS.tooCheap);
+chips('#earlyBirdChips', 'earlyBird', OPTIONS.earlyBird);
+chips('#notifyChips', 'notify', OPTIONS.notify);
+
+const form = $('#survey');
+const val = name => (form.querySelector(`input[name="${name}"]:checked`) || {}).value || '';
+
+// Second choice can't be the same as the first
+function syncSecond() {
+  const first = val('design');
+  $$('input[name="second"]').forEach(i => {
+    i.disabled = i.value === first;
+    if (i.disabled && i.checked) i.checked = false;
+  });
+}
+form.addEventListener('change', e => {
+  if (e.target.name === 'design') syncSecond();
+  if (e.target.name === 'notify') $('#phoneWrap').hidden = val('notify') !== 'Ya';
+  const err = form.querySelector(`[data-err="${e.target.name}"]`);
+  if (err) err.textContent = '';
+});
+// Tapping a selected "second choice" again clears it
+$('#secondChips').addEventListener('click', e => {
+  const i = e.target.closest('label')?.querySelector('input');
+  if (i && i.checked && i.dataset.was === '1') { i.checked = false; i.dataset.was = ''; e.preventDefault(); return; }
+  $$('input[name="second"]').forEach(x => x.dataset.was = ''); if (i) setTimeout(() => i.dataset.was = i.checked ? '1' : '', 0);
+});
+
+// Lightbox
+const lb = $('#lb');
+function openLb(id) {
+  const d = DESIGNS.find(x => x.id === id);
+  $('#lbImg').src = d.img; $('#lbImg').alt = `Poster Design ${d.id}: ${d.label}`;
+  $('#lbCap').textContent = `Design ${d.id} · ${d.label}`;
+  lb.classList.add('on'); $('#lbClose').focus();
+}
+$('#designGrid').addEventListener('click', e => {
+  const z = e.target.closest('[data-zoom]');
+  if (z) { e.preventDefault(); openLb(z.dataset.zoom); }
+});
+const closeLb = () => lb.classList.remove('on');
+$('#lbClose').onclick = closeLb;
+lb.addEventListener('click', e => { if (e.target === lb) closeLb(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+// Steps
+const STEPS = 4;
+let step = 1;
+const REQUIRED = { 1: ['design'], 2: ['sleeve', 'size'], 3: ['intent', 'priceShort', 'priceLong', 'tooExpensive', 'tooCheap', 'earlyBird'], 4: ['notify'] };
+function showStep(n) {
+  step = n;
+  $$('.step').forEach(s => s.classList.toggle('on', s.dataset.step === String(n)));
+  const done = n === 'done';
+  $('#nav').hidden = done;
+  $('#progress').hidden = done;
+  $('#barFill').style.width = (n / STEPS * 100) + '%';
+  $('#stepLabel').textContent = `Langkah ${n} / ${STEPS}`;
+  $('#backBtn').style.visibility = n > 1 ? 'visible' : 'hidden';
+  $('#nextBtn').textContent = n === STEPS ? 'Hantar jawapan ✓' : 'Next ⟶';
+  form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function checkStep(n) {
+  let firstBad = null;
+  (REQUIRED[n] || []).forEach(name => {
+    const ok = !!val(name);
+    const err = form.querySelector(`[data-err="${name}"]`);
+    if (err) err.textContent = ok ? '' : 'Sila pilih satu.';
+    if (!ok && !firstBad) firstBad = err;
+  });
+  if (n === 4 && val('notify') === 'Ya') {
+    const raw = $('#phone').value.trim();
+    const p = normPhone(raw);
+    const okPhone = /^60\d{8,10}$/.test(p);
+    $('[data-err="phone"]').textContent = okPhone ? '' : 'Masukkan no WhatsApp yang sah, cth 012-345 6789.';
+    $('#phone').classList.toggle('invalid', !okPhone);
+    const okConsent = $('#consent').checked;
+    $('[data-err="consent"]').textContent = okConsent ? '' : 'Sila tick untuk setuju.';
+    if (!okPhone && !firstBad) firstBad = $('[data-err="phone"]');
+    if (!okConsent && !firstBad) firstBad = $('[data-err="consent"]');
+  }
+  if (firstBad) firstBad.closest('.q').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  return !firstBad;
+}
+function normPhone(p) {
+  let d = p.replace(/[^\d]/g, '');
+  if (d.startsWith('0')) d = '6' + d;
+  return d;
+}
+$('#backBtn').onclick = () => { if (step > 1) showStep(step - 1); };
+$('#nextBtn').onclick = () => {
+  $('#status').className = 'status';
+  if (!checkStep(step)) return;
+  if (step < STEPS) showStep(step + 1); else submit();
+};
+
+// Response ID (helps spot duplicates in the sheet)
+let rid = '';
+try { rid = localStorage.getItem('kmkph26_rid') || ''; } catch (e) {}
+if (!rid) { rid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); try { localStorage.setItem('kmkph26_rid', rid); } catch (e) {} }
+
+async function submit() {
+  const st = $('#status');
+  if (!connected) { st.className = 'status show'; st.textContent = 'Survey belum disambung (SCRIPT_URL belum set).'; return; }
+  const btn = $('#nextBtn');
+  btn.disabled = true; btn.textContent = 'Menghantar…';
+  const payload = {
+    design: val('design'), second: val('second'),
+    reasons: $$('input[name="reasons"]:checked').map(i => i.value),
+    suggestion: $('#suggestion').value.trim(),
+    sleeve: val('sleeve'), size: val('size'), intent: val('intent'),
+    priceShort: val('priceShort'), priceLong: val('priceLong'),
+    tooExpensive: val('tooExpensive'), tooCheap: val('tooCheap'), earlyBird: val('earlyBird'),
+    program: $('#program').value.trim(),
+    notify: val('notify'), phone: val('notify') === 'Ya' ? normPhone($('#phone').value) : '',
+    website: $('#website').value, responseId: rid,
+  };
+  try {
+    // text/plain avoids a CORS preflight, which Apps Script doesn't support
+    const res = await fetch(CONFIG.SCRIPT_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Ada masalah.');
+    try { localStorage.setItem('kmkph26_done', payload.design); } catch (e) {}
+    showDone(payload.design);
+    if (typeof data.total === 'number') setCount(data.total);
+  } catch (err) {
+    st.className = 'status show';
+    st.textContent = 'Tak dapat hantar: ' + err.message + ' Cuba lagi.';
+    btn.disabled = false; btn.textContent = 'Hantar jawapan ✓';
+  }
+}
+
+function showDone(id) {
+  const d = DESIGNS.find(x => x.id === id);
+  if (d) $('#donePick').innerHTML = `<div class="crop"><img src="${d.img}" alt=""></div><div class="meta">Pilihan korang: Design ${d.id} · ${d.label}</div>`;
+  const url = location.href.split('#')[0];
+  const text = `Jom pilih design baju KMKPH ’26! 5 design, 2 minit je 👉 ${url}`;
+  $('#shareBtn').href = 'https://wa.me/?text=' + encodeURIComponent(text);
+  showStep('done');
+}
+
+// Live response count (social proof)
+function setCount(n) {
+  if (n > 0) $('#count').innerHTML = `<b>${n}</b> orang dah undi`;
+}
+if (connected) {
+  fetch(CONFIG.SCRIPT_URL).then(r => r.json()).then(d => {
+    if (typeof d.total === 'number') setCount(d.total);
+    if (d.open === false) {
+      $('#nextBtn').disabled = true;
+      const st = $('#status'); st.className = 'status show'; st.textContent = 'Survey dah tutup. Terima kasih atas sokongan!';
+    }
+  }).catch(() => {});
+}
+
+// Already answered on this device
+try {
+  const prev = localStorage.getItem('kmkph26_done');
+  if (prev) {
+    const st = $('#status');
+    st.className = 'status show';
+    st.style.background = '#eef7f1'; st.style.color = 'var(--ok)';
+    st.textContent = `Korang dah jawab survey ni (Design ${prev}). Terima kasih! Kalau nak jawab semula, boleh teruskan.`;
+  }
+} catch (e) {}
+
+showStep(1);
+window.scrollTo(0, 0);
+</script>
+</body>
+</html>
