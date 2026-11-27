@@ -34,7 +34,16 @@ const CONFIG = {
   CLOSES_AT: '2026-12-06T23:59:00+08:00',
   SEND_CONFIRMATION_EMAIL: true,
   ADMIN_EMAIL: '',            // optional: get a copy of every order, e.g. 'you@gmail.com'
+
+  // The orders spreadsheet. Only needed when the script isn't opened from the Sheet itself
+  // (the ID is the long part of the Sheet's URL between /d/ and /edit).
+  SHEET_ID: '1q0tYRYuXnnbiEFVS8AjbsJuQoiR7YUbgVNR6JMCRcC0',
 };
+
+// The orders spreadsheet: the Sheet this script is attached to, or SHEET_ID for a standalone script
+function ss_() {
+  return SpreadsheetApp.getActiveSpreadsheet() || SpreadsheetApp.openById(CONFIG.SHEET_ID);
+}
 
 const STATUSES = ['Pending verification', 'Paid', 'Payment issue', 'Ready for pickup', 'Collected', 'Cancelled'];
 
@@ -82,7 +91,7 @@ function priceItems_(items, earlyLeft) {
 }
 
 function doGet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   const itemsSheet = getOrCreateSheet_(ss, CONFIG.ITEMS_SHEET, ITEM_HEADERS);
   return json_({ ok: true, open: !orderWindow_(), opensAt: CONFIG.OPENS_AT, closesAt: CONFIG.CLOSES_AT,
     earlyBirdLeft: earlyBirdLeft_(itemsSheet), earlyBirdLimit: CONFIG.EARLY_BIRD_LIMIT });
@@ -107,7 +116,7 @@ function doPost(e) {
     const v = validate_(d);
     if (v.error) return json_({ ok: false, error: v.error });
 
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const ss = ss_();
     const orders = getOrCreateSheet_(ss, CONFIG.ORDERS_SHEET, ORDER_HEADERS);
     const itemsSheet = getOrCreateSheet_(ss, CONFIG.ITEMS_SHEET, ITEM_HEADERS);
 
@@ -240,6 +249,11 @@ function safe_(v) {
   return /^[=+\-@]/.test(v) ? "'" + v : v;
 }
 
+// Pop-up when run from the Sheet's menu; falls back to the log when run from the script editor
+function notify_(msg) {
+  try { SpreadsheetApp.getUi().alert(msg); } catch (e) { console.log(msg); }
+}
+
 function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
@@ -265,7 +279,7 @@ Please keep this email and your Order ID for pickup.
 /* ---------- One-time setup (run from the editor) ---------- */
 
 function setup() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = ss_();
   const orders = getOrCreateSheet_(ss, CONFIG.ORDERS_SHEET, ORDER_HEADERS);
   getOrCreateSheet_(ss, CONFIG.ITEMS_SHEET, ITEM_HEADERS);
 
@@ -284,7 +298,7 @@ function setup() {
 
   buildSummary_(ss);
   getProofFolder_();
-  SpreadsheetApp.getUi().alert('Setup done. Now deploy: Deploy > New deployment > Web app.');
+  notify_('Setup done. Now deploy: Deploy > New deployment > Web app.');
 }
 
 function buildSummary_(ss) {
@@ -328,7 +342,7 @@ function buildSummary_(ss) {
 /** Optional: email every "Ready for pickup" buyer. Run manually after setting the pickup details. */
 function emailPickupNotice() {
   const PICKUP = 'Location: TBA\nDate: TBA\nTime: TBA'; // edit before running
-  const sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(CONFIG.ORDERS_SHEET);
+  const sh = ss_().getSheetByName(CONFIG.ORDERS_SHEET);
   const rows = sh.getDataRange().getValues();
   let sent = 0;
   for (let i = 1; i < rows.length; i++) {
@@ -338,5 +352,5 @@ function emailPickupNotice() {
       `Hi ${name},\n\nYour order (${items}) is ready!\n\n${PICKUP}\n\nPlease bring your Order ID: ${orderId}\n\n— MMU Collegiate Series ’26`);
     sent++;
   }
-  SpreadsheetApp.getUi().alert(`Sent ${sent} pickup emails.`);
+  notify_(`Sent ${sent} pickup emails.`);
 }
