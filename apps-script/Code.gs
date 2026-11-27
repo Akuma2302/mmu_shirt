@@ -339,6 +339,42 @@ function buildSummary_(ss) {
   sh.autoResizeColumns(1, variants.length + 2);
 }
 
+/**
+ * Removes test orders (Full Name starting with "TEST ORDER") from Orders and Items,
+ * moves their payment proofs to the Drive bin, and resets the order counter so the
+ * next order number follows the last real one. Run from the editor before launch.
+ */
+function removeTestOrders() {
+  const ss = ss_();
+  const orders = ss.getSheetByName(CONFIG.ORDERS_SHEET);
+  const items = ss.getSheetByName(CONFIG.ITEMS_SHEET);
+  const testIds = [];
+
+  const rows = orders.getDataRange().getValues();
+  for (let r = rows.length - 1; r >= 1; r--) {
+    if (String(rows[r][2]).startsWith('TEST ORDER')) {
+      testIds.push(rows[r][0]);
+      const proofUrl = String(rows[r][9]);
+      const m = proofUrl.match(/[-\w]{25,}/);
+      if (m) { try { DriveApp.getFileById(m[0]).setTrashed(true); } catch (e) { console.warn('Proof not found: ' + proofUrl); } }
+      orders.deleteRow(r + 1);
+    }
+  }
+  const itemRows = items.getDataRange().getValues();
+  for (let r = itemRows.length - 1; r >= 1; r--) {
+    if (testIds.indexOf(itemRows[r][0]) >= 0) items.deleteRow(r + 1);
+  }
+
+  // Next order number = highest remaining order number + 1
+  let maxSeq = 0;
+  orders.getDataRange().getValues().slice(1).forEach(row => {
+    const n = parseInt(String(row[0]).replace(CONFIG.ORDER_PREFIX, ''), 10);
+    if (n > maxSeq) maxSeq = n;
+  });
+  PropertiesService.getScriptProperties().setProperty('ORDER_SEQ', String(maxSeq));
+  notify_(`Removed ${testIds.length} test order(s): ${testIds.join(', ') || 'none'}. Next order: ${CONFIG.ORDER_PREFIX}${String(maxSeq + 1).padStart(4, '0')}`);
+}
+
 /** Optional: email every "Ready for pickup" buyer. Run manually after setting the pickup details. */
 function emailPickupNotice() {
   const PICKUP = 'Location: TBA\nDate: TBA\nTime: TBA'; // edit before running
